@@ -1,9 +1,10 @@
 import time
+import os
 from tkinter import *
 import tkinter.filedialog
 import tkinter.messagebox
 from tkinter import ttk
-from multiprocessing import Process, freeze_support
+from multiprocessing import Process, freeze_support, set_executable
 from config import SEND_ROLE
 from auto import AutoGui
 from threading import Thread
@@ -155,6 +156,8 @@ class WeiXin(object):
             self.start_btn.config(text='执行')
 
     def execute(self, func, args):
+        freeze_support()           # 不打开新窗口，pyinstaller打包
+        # set_executable(os.path.join(sys.exec_prefix, 'pythonw.exe')) # 不打开新窗口
         self.p = Process(target=func, args=args)
         print('p:::', self.p)
         self.p.start()
@@ -163,7 +166,6 @@ class WeiXin(object):
 if __name__ == '__main__':
     weixin = WeiXin()
     try:
-        freeze_support()
         weixin.main()
     except Exception as e:
         print(e)
